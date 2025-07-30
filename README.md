@@ -13,14 +13,7 @@ Design and simulation of Ideal and Real Bandgap Reference (BGVR) circuits. Inclu
 3. [PTAT Voltage Generation](#3-ptat-voltage-generation)
 4. [Self-Biased Current Mirror Circuit](#4-self-biased-current-mirror-circuit)
 5. [Reference Branch Circuit](#5-reference-branch-circuit)
-6. [Start-up Circuit](#6-start-up-circuit)
-7. .[Amplifier Circuit](#7-complete-bgr-circuit)
-8. [Simulation and Waveforms](#8-simulation-and-waveforms)
-9. [Specifications](#9-specifications)
-10. [Layout Design](#10-layout-design)
-11. [Installation and Usage](#11-installation-and-usage)
-12. [Future Work](#12-future-work)
-13. [Acknowledgments](#13-acknowledgments)
+6. [Acknowledgments](#6-Acknowledgments)
 
 ## 1. BGR Introduction
 
@@ -318,7 +311,7 @@ Enhanced version with:
 
 **Improved Performance:**
 - Temperature Coefficient: < 15 ppm/°C
-- Voltage Variation: < 5mV over full range
+- Voltage Variation: < 5mV over full range 
 - Better linearity across temperature
 
 ### 8.8 Voltage Variation vs VDD (Cascode)
@@ -380,90 +373,6 @@ Enhanced version with:
 - Power consumption reduced by 30%
 - PSRR enhanced by 15dB
 
-## 10. Layout Design
-
-### Design Rules
-
-Using **Gpdk090nm CMOS** technology with standard design rules:
-
-- **Minimum Width**: 0.15µm
-- **Minimum Spacing**: 0.15µm
-- **Via Size**: 0.15µm × 0.15µm
-- **Metal Layers**: 6 available layers
-
-### Layout Strategy
-
-1. **Symmetry**: Matched device placement
-2. **Shielding**: Guard rings for isolation
-3. **Routing**: Minimize parasitic effects
-4. **Thermal**: Heat distribution considerations
-
-### Key Layout Techniques
-
-- **Common Centroid**: BJT and resistor matching
-- **Dummy Devices**: Process gradient compensation
-- **Metal Fill**: Density requirements
-- **ESD Protection**: I/O protection structures
-
-### Floor Plan
-
-```
-┌─────────────────────────────┐
-│     Start-up Circuit        │
-├─────────────────────────────┤
-│  Current Mirror Array       │
-├─────────────────────────────┤
-│   PTAT    │  CTAT  │  REF   │
-│  Branch   │ Branch │ Branch │
-├─────────────────────────────┤
-│     Output Buffer           │
-└─────────────────────────────┘
-```
-
-### Post-Layout Verification
-
-- **DRC**: Design Rule Check - Clean
-- **LVS**: Layout vs Schematic - Match
-- **PEX**: Parasitic Extraction - Complete
-- **Post-Layout Simulation**: Specifications met
-
-## 11. Installation and Usage
-
-### Prerequisites
-
-```bash
-# Required tools
-- Cadence Virtuoso (or equivalent)
-- SPICE simulator (Spectre/HSPICE)
-- SKY130 PDK
-- Python 3.8+ (for analysis scripts)
-```
-
-### Repository Structure
-
-```
-msvsdbgr/
-├── README.md
-├── docs/
-│   ├── theory/
-│   ├── specifications/
-│   └── measurements/
-├── design/
-│   ├── schematics/
-│   ├── symbols/
-│   └── testbenches/
-├── simulation/
-│   ├── netlists/
-│   ├── results/
-│   └── scripts/
-├── layout/
-│   ├── gds/
-│   ├── extracted/
-│   └── verification/
-└── scripts/
-    ├── analysis/
-    └── automation/
-```
 
 ### Getting Started
 
@@ -553,11 +462,7 @@ plt.show()
   - M.Tech in VLSI Design, IIIT Bangalore
   - Email: [ajaykumar.gandi@iiitb.ac.in](mailto:ajaykumar.gandi@iiitb.ac.in)
 
-### Institutions
 
-- **International Institute of Information Technology, Bangalore**
-- **VSD Corp. Pvt. Ltd.**
-- **Semi-conductor Laboratory**
 
 ### Open Source Community
 
