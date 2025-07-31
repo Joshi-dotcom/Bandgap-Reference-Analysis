@@ -1,6 +1,6 @@
 # Bandgap-Reference-Analysis
 Design and simulation of Ideal and Real Bandgap Reference (BGVR) circuits. Includes theoretical background, schematic diagrams, temperature coefficient analysis, PSRR, and mismatch effects based on Cadence simulations.
-# Bandgap Reference Circuit (BGR) Design
+0# Bandgap Reference Circuit (BGR) Design
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Technology](https://img.shields.io/badge/Technology-gpdk090nm-blue.svg)](https://github.com/google/skywater-pdk)
@@ -9,11 +9,12 @@ Design and simulation of Ideal and Real Bandgap Reference (BGVR) circuits. Inclu
 ## 📋 Table of Contents
 
 1. [BGR Introduction](#1-bgr-introduction)
-2. [CTAT Voltage Generation](#2-ctat-voltage-generation)
-3. [PTAT Voltage Generation](#3-ptat-voltage-generation)
-4. [Self-Biased Current Mirror Circuit](#4-self-biased-current-mirror-circuit)
-5. [Reference Branch Circuit](#5-reference-branch-circuit)
-6. [Acknowledgments](#6-Acknowledgments)
+2. [Device response to tempurature variations](#2-device-response-to-tempurature-variations)
+3. [CTAT Voltage Generation](#3-ctat-voltage-generation)
+4. [PTAT Voltage Generation](#4-ptat-voltage-generation)
+5. [Self-Biased Current Mirror Circuit](#5-self-biased-current-mirror-circuit)
+6. [Reference Branch Circuit](#6-reference-branch-circuit)
+
 
 ## 1. BGR Introduction
 
@@ -22,41 +23,33 @@ Design and simulation of Ideal and Real Bandgap Reference (BGVR) circuits. Inclu
 - Bandgap reference circuits are essential in integrated citcuits to generate stable and precise voltage and current references, independent of PVT changes.
 
 
-### Key Features
+Voltage Reference circuits provide constant, stable voltage irrespective of variations in temperature, supply voltage, and process parameters.
+It is a vital analog building block used in many applications like Low Dropout voltage regulators, Analog-to-Digital converters, Digital-to-Analog converters, Buck converters, etc. Compared to using a voltage regulator, a reference circuit lacks current-driving capability.
 
-- **Temperature Stability**: Provides stable reference voltage over wide temperature range (-40°C to 125°C)
-- **Low Noise**: High-quality components ensure minimal voltage fluctuations
-- **High Accuracy**: Consistent reference voltage over time with ±2% accuracy
-- **Low Output Impedance**: Stable output voltage even with load variations
-- **Low Power Consumption**: Optimized for minimal system power impact
-- **Wide Input Voltage Range**: Compatible with different supply voltages (1.8V - 3.6V)
-- **Compact Size**: Easily integrated into electronic systems
+As per industry standards, a voltage reference in temperature is considered as from -40 to 125. Range of supply variation depends upon  application requirements, typically 10% to 20% from the typical value of supply voltage.
 
 
-### Operating Principle
+## 2. Device response to temperature variations
+All electronic devices are sensitive to temperature variations.
+If voltage across a device increases with the increase in temperature, then such devices are called PTAT (Proportional to Absolute Temperature).
+If voltage decreases with the increase in temperature, then such devices are called CTAT (Complementary to Absolute Temperature).
+Consider Fig. 1(a), where typical PTAT and CTAT voltage responses are shown. If we add PTAT and CTAT voltages, we get the response as shown in Fig. 1(b).
+Thus, the response is combined to obtain a stable voltage by multiplying PTAT and CTAT voltages with suitable constants.
+Fig. 2 forms the basic idea behind the band-gap reference.
 
-The Bandgap Voltage Reference operates on the principle of temperature compensation by combining two voltages with opposite temperature coefficients to create a temperature-independent reference voltage.
-## Core Operating Principle
-The Temperature Compensation Equation
-Where:
+Fig. 1:
 
-VCTAT: Voltage with negative temperature coefficient (Complementary to Absolute Temperature)
-VPTAT: Voltage with positive temperature coefficient (Proportional to Absolute Temperature)
-α: Scaling factor to balance the temperature effect
+(a) PTAT and CTAT responses
 
-## 2. CTAT Voltage Generation
+(b) Response of voltage reference
+
+
+## 3. CTAT Voltage Generation
 
 ### Theory
 
-CTAT voltage generation utilizes the temperature-dependent characteristics of semiconductor diodes or BJTs. The base-emitter voltage (Vbe) of a BJT exhibits negative temperature coefficient:
+CTAT voltage can be obtained from a diode if a constant current I is passed through as shown in Fig3:
 
-```
-Vbe = Vbe0 - (∂Vbe/∂T) × (T - T0)
-```
-
-Where:
-- Vbe0: Base-emitter voltage at reference temperature T0
-- ∂Vbe/∂T ≈ -2mV/°C: Temperature coefficient
 
 ### Circuit Implementation
 
@@ -349,87 +342,8 @@ Enhanced version with:
 - Enable Low: Power-down mode
 - Power Consumption: < 1µA in shutdown
 
-## 9. Specifications
-
-### Target Specifications
-
-| Parameter | Specification | Achieved | Units |
-|-----------|---------------|----------|-------|
-| Supply Voltage | 1.8 - 3.6 | 1.8 - 3.6 | V |
-| Reference Voltage | 1.25 ± 5% | 1.245 ± 2% | V |
-| Temperature Range | -40 to 125 | -40 to 125 | °C |
-| Temperature Coefficient | < 50 | 12 | ppm/°C |
-| Line Regulation | < 1 | 0.3 | mV/V |
-| Load Regulation | < 1 | 0.1 | mV/mA |
-| PSRR @ DC | > 60 | 75 | dB |
-| Power Consumption | < 50 | 35 | µW |
-| Start-up Time | < 20 | 8 | µs |
-| Output Current | > 100 | 150 | µA |
-
-### Performance Summary
-
-✅ **All specifications met or exceeded**
-- Temperature coefficient improved by 4x
-- Power consumption reduced by 30%
-- PSRR enhanced by 15dB
 
 
-### Getting Started
-
-1. **Clone Repository**
-```bash
-git clone https://github.com/yourusername/msvsdbgr.git
-cd msvsdbgr
-```
-
-2. **Setup Environment**
-```bash
-source setup_env.sh
-```
-
-3. **Run Simulations**
-```bash
-cd simulation/
-./run_all_sims.sh
-```
-
-4. **Generate Plots**
-```bash
-python scripts/analysis/plot_results.py
-```
-
-### Simulation Commands
-
-```bash
-# Temperature sweep
-spectre +log temp_sweep.log temp_sweep.scs
-
-# Supply sweep  
-spectre +log supply_sweep.log supply_sweep.scs
-
-# Monte Carlo
-spectre +log monte_carlo.log monte_carlo.scs
-```
-
-### Python Analysis
-
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-from bgr_analysis import BGRAnalyzer
-
-# Load simulation data
-analyzer = BGRAnalyzer()
-data = analyzer.load_results('simulation/results/')
-
-# Calculate temperature coefficient
-tc = analyzer.calculate_temp_coefficient(data)
-print(f"Temperature Coefficient: {tc:.1f} ppm/°C")
-
-# Plot temperature response
-analyzer.plot_temperature_response(data)
-plt.show()
-```
 
 ## 12. Future Work
 
@@ -447,65 +361,10 @@ plt.show()
 - [ ] **Digital Control**: Programmable temperature coefficient
 - [ ] **Advanced Startup**: Faster, more robust initialization
 
-### Research Directions
-
-- [ ] **Machine Learning**: AI-assisted optimization
-- [ ] **Advanced Topologies**: Novel circuit architectures
-- [ ] **Multi-Output**: Multiple reference voltages
-- [ ] **Self-Calibration**: Automatic compensation
-
-## 13. Acknowledgments
-
-### Contributors
-
-- **Gandi AjayKumar** - Design and Implementation
-  - M.Tech in VLSI Design, IIIT Bangalore
-  - Email: [ajaykumar.gandi@iiitb.ac.in](mailto:ajaykumar.gandi@iiitb.ac.in)
 
 
 
-### Open Source Community
 
-- **SkyWater Technology** - Open PDK
-- **OpenROAD Project** - Open-source EDA tools
-- **MAGIC Layout Tool** - Layout editor
-- **NGSpice Community** - SPICE simulator
 
----
 
-## 📊 Performance Dashboard
 
-![Temperature Response](images/temp_response.png)
-![Supply Rejection](images/psrr_response.png)
-![Monte Carlo Analysis](images/monte_carlo.png)
-
-## 🏆 Achievements
-
-- ✅ **All specifications exceeded**
-- ✅ **Open-source implementation**
-- ✅ **Comprehensive documentation**
-- ✅ **Verified through simulation**
-
-## 📝 Citation
-
-If you use this work in your research, please cite:
-
-```bibtex
-@misc{2025bgr,
-  title={Bandgap Reference Circuit Design using gpdk090 Technology},
-  author={Meesala Joshita},
-  year={2025},
-  publisher={GitHub},
-  url={https://github.com/AjayKumar-Gandi/msvsdbgr}
-}
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-**⭐ Star this repository if you find it helpful!**
-
-For questions, issues, or collaboration opportunities, please open an issue or contact the maintainers.
